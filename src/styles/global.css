@@ -32,6 +32,22 @@ h1 {
   height: 5px;
   margin-bottom: 10px;
   background-color: #ff9776;
+  transition: transform 0.3s cubic-bezier(0.4, 2.08, 0.55, 0.44), opacity 0.3s;
+}
+
+.hamburger.expanded .line:first-child,
+.hamburger.expanded .line:last-child {
+  display: none;
+}
+
+.hamburger .line:nth-child(2) {
+  /* Default: horizontal */
+  transform: rotate(0deg);
+}
+
+.hamburger.expanded .line:nth-child(2) {
+  /* Rotated: vertical */
+  transform: rotate(90deg);
 }
 
 .nav-links {
