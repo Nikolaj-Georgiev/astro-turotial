@@ -23,19 +23,21 @@ const skillColor = "navy";
 const fontWeight = "bold";
 const textCase = "uppercase";
 ---
-<BaseLayout>
+<BaseLayout pageTitle={pageTitle} >
 	<style is:global define:vars={{skillColor, fontWeight, textCase}}>
 		h1 {
 			color: purple;
 			font-size: 4rem;
 		}
+		/* demo is wrong, and this is not working. BaseLayout is overriding this despite that there is is:global here */
+		
 		.skill {
 			color: var(--skillColor);
 			font-weight: var(--fontWeight);
 			text-transform: var(--textCase);
 		}
 	</style>
-	<h1>{pageTitle}</h1>
+	<!-- <h1>{pageTitle}</h1> -->
 	<h2>... and my new Astro site!</h2>
 	<p>I am working through Astro's introductory tutorial. This is the second page on my website, and it's the first one I built myself!</p>
 	

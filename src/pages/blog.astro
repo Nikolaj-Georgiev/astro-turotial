@@ -6,8 +6,7 @@ import '../styles/global.css'
 const pageTitle = "My Astro Learning Blog";
 ---
 
-<BaseLayout>
-  <h1>{pageTitle}</h1>
+<BaseLayout pageTitle={pageTitle}>
   <AstroGreat />
   <AstroGreat btn="Try again!" message="Nope, brain still missing. Loading...." />
   <p>This is where I will post about my journey learning Astro.</p>
