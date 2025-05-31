@@ -2,26 +2,54 @@
 import BlogPost from '../../components/BlogPost.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-export function getStaticPaths() {
-  const allPosts = Object.values(import.meta.glob('../posts/*.md', { eager: true }));
+// export function getStaticPaths() {
+//   const allPosts = Object.values(import.meta.glob('../posts/*.md', { eager: true }));
+
+//   return [
+//   { params: { tag: 'astro' }, props: {posts: allPosts} },
+//   { params: { tag: 'successes' }, props: {posts: allPosts} },
+//   { params: { tag: 'community' }, props: {posts: allPosts} },
+//   { params: { tag: 'blogging' }, props: {posts: allPosts} },
+//   { params: { tag: 'setbacks' } , props: {posts: allPosts}},
+//   { params: { tag: 'learning in public' }, props: {posts: allPosts} },
+//   ];
+// }
+
+export async function getStaticPaths() {
+  const allPosts = Object.values(
+  import.meta.glob('../posts/*.md', { eager: true })
+  );
   
-  return [
-  { params: { tag: 'astro' }, props: {posts: allPosts} },
-  { params: { tag: 'successes' }, props: {posts: allPosts} },
-  { params: { tag: 'community' }, props: {posts: allPosts} },
-  { params: { tag: 'blogging' }, props: {posts: allPosts} },
-  { params: { tag: 'setbacks' } , props: {posts: allPosts}},
-  { params: { tag: 'learning in public' }, props: {posts: allPosts} },
-  ];
+  //oldschool way to get all tags
+  // const tagSet = new Set();
+  // allPosts.forEach((post:any) => {
+  //   post.frontmatter.tags?.forEach((tag:'string') => tagSet.add(tag));
+  // });
+  
+  // return Array.from(tagSet).map((tag) => ({
+  //   params: { tag },
+  //   props: { posts: allPosts },
+  // }));
+  
+  // Using set to get unique tags
+  const uniqueTags = [...new Set(allPosts.map((post: any) => post.frontmatter.tags).flat())];
+  
+  return uniqueTags.map((tag) => {
+    const filteredPosts = allPosts.filter((post: any) => post.frontmatter.tags.includes(tag));
+    return {
+      params: { tag },
+      props: { posts: filteredPosts },
+    };
+  });
 }
 
 const { tag } = Astro.params;
 const { posts } = Astro.props;
-const filteredPosts = posts.filter((post: any) => post.frontmatter.tags?.includes(tag));
+// const filteredPosts = posts.filter((post: any) => post.frontmatter.tags?.includes(tag));// this was the old way, but now we pass posts as props instead of filtering here.
 ---
 <BaseLayout pageTitle={tag}>
-  <p>Posts tagged with "{tag}"</p>
+  <p>Posts tagged with <strong>"{tag}"</strong></p>
   <ul>
-    {filteredPosts.map((post: any) => <BlogPost url={post.url} title={post.frontmatter.title}/>)}
+    {posts.map((post: any) => <BlogPost url={post.url} title={post.frontmatter.title}/>)}
   </ul>
 </BaseLayout> 

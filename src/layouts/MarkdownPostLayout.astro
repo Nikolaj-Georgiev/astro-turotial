@@ -11,7 +11,7 @@ const { frontmatter } = Astro.props;
   {frontmatter.tags && (
     <p>
       Tags:{" "}
-      {frontmatter.tags.map((tag, i) => (
+      {frontmatter.tags.map((tag:'string', i:any) => (
         <>
           <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>
           {i < frontmatter.tags.length - 1 ? ", " : ""}
