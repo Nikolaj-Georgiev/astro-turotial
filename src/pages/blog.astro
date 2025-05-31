@@ -12,7 +12,6 @@ const pageTitle = "My Astro Learning Blog";
   <AstroGreat btn="Try again!" message="Nope, brain still missing. Loading...." />
   <p>This is where I will post about my journey learning Astro.</p>
   <ul>
-    <!-- {allPosts.map((post:any) =>  <li><a href={post.url}>{post.frontmatter.title}</a></li>)} -->
     {allPosts.map((post:any) => <BlogPost url={post.url} title={post.frontmatter.title} />)}
   </ul>
 </BaseLayout>
