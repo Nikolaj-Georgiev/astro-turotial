@@ -1,6 +1,7 @@
 ---
 import AstroHeart from '../components/AstroHeart.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Greeting from '../components/Greeting';
 import '../styles/global.css'
 
 const pageTitle = "Home Page";
@@ -8,5 +9,6 @@ const pageTitle = "Home Page";
 
 <BaseLayout pageTitle={pageTitle} >
   <h2>My awesome blog subtitle</h2>
+  <Greeting client:load messages={["Hej", "Hallo", "Hola", "Habari", "Howdy", "Hey there", "Bai Hui"]} />
 	<AstroHeart />
 </BaseLayout>
