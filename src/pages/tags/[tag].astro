@@ -1,6 +1,7 @@
 ---
 import BlogPost from '../../components/BlogPost.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from "astro:content";
 
 // export function getStaticPaths() {
 //   const allPosts = Object.values(import.meta.glob('../posts/*.md', { eager: true }));
@@ -16,9 +17,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 // }
 
 export async function getStaticPaths() {
-  const allPosts = Object.values(
-  import.meta.glob('../posts/*.md', { eager: true })
-  );
+  // const allPosts = Object.values(
+  // import.meta.glob('../posts/*.md', { eager: true }));
   
   //oldschool way to get all tags
   // const tagSet = new Set();
@@ -32,10 +32,13 @@ export async function getStaticPaths() {
   // }));
   
   // Using set to get unique tags
-  const uniqueTags = [...new Set(allPosts.map((post: any) => post.frontmatter.tags).flat())];
+  // const uniqueTags = [...new Set(allPosts.map((post: any) => post.frontmatter.tags).flat())];
+  //using content collections to get all posts
+  const allPosts = await getCollection("blog");
+  const uniqueTags = [...new Set(allPosts.map((post: any) => post.data.tags).flat())];
   
   return uniqueTags.map((tag) => {
-    const filteredPosts = allPosts.filter((post: any) => post.frontmatter.tags.includes(tag));
+    const filteredPosts = allPosts.filter((post: any) => post.data.tags.includes(tag));
     return {
       params: { tag },
       props: { posts: filteredPosts },
@@ -50,6 +53,7 @@ const { posts } = Astro.props;
 <BaseLayout pageTitle={tag}>
   <p>Posts tagged with <strong>"{tag}"</strong></p>
   <ul>
-    {posts.map((post: any) => <BlogPost url={post.url} title={post.frontmatter.title}/>)}
+    <!-- {posts.map((post: any) => <BlogPost url={post.url} title={post.frontmatter.title}/>)} -->
+     { posts.map((post: any) => <BlogPost url={`/posts/${post.id}/`} title={post.data.title} />) }
   </ul>
 </BaseLayout> 

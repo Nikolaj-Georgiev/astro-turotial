@@ -1,9 +1,11 @@
 ---
+import { getCollection } from 'astro:content';
 import AstroGreat from '../components/AstroGreat.astro';
 import BlogPost from '../components/BlogPost.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/global.css'
-const allPosts = Object.values(import.meta.glob('./posts/*md',{eager:true}));
+// const allPosts = Object.values(import.meta.glob('./posts/*md',{eager:true}));
+const allPosts = await getCollection("blog");
 const pageTitle = "My Astro Learning Blog";
 ---
 
@@ -12,7 +14,11 @@ const pageTitle = "My Astro Learning Blog";
   <AstroGreat btn="Try again!" message="Nope, brain still missing. Loading...." />
   <p>This is where I will post about my journey learning Astro.</p>
   <ul>
-    {allPosts.map((post:any) => <BlogPost url={post.url} title={post.frontmatter.title} />)}
+    {allPosts.map((post:any) => (
+       <BlogPost url={`/posts/${post.id}/`} title={post.data.title} />
+      //  <BlogPost url={post.url} title={post.frontmatter.title} />
+    ))}
+    
   </ul>
 </BaseLayout>
 
